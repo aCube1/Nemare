@@ -11,6 +11,13 @@ pub fn build(b: *Builder) void {
     nemare.linkLibC();
     switch (target.getOsTag()) {
         .linux => nemare.linkSystemLibrary("SDL2"),
+        .windows => {
+                        // Change this according to where your SDL2 source files are located.
+                        const SDL2_PATH = "C:/vclib/SDL2-2.0.22/";
+                        nemare.addIncludeDir(SDL2_PATH ++ "include");
+                        nemare.addLibPath(SDL2_PATH ++ "lib/x64");
+                        nemare.linkSystemLibrary("SDL2");
+        },
         else => std.debug.panic("Cannot identify current OS", .{}),
     }
     nemare.install();
