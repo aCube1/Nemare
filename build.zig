@@ -1,5 +1,5 @@
 const std = @import("std");
-const Builder = @import("std").build.Builder;
+const Builder = std.build.Builder;
 
 pub fn build(b: *Builder) void {
     const target = b.standardTargetOptions(.{});
@@ -11,7 +11,7 @@ pub fn build(b: *Builder) void {
     nemare.linkLibC();
     switch (target.getOsTag()) {
         .linux => nemare.linkSystemLibrary("SDL2"),
-        else => std.log.err("Cannot identify current OS", .{}),
+        else => std.debug.panic("Cannot identify current OS", .{}),
     }
     nemare.install();
 
@@ -21,6 +21,6 @@ pub fn build(b: *Builder) void {
         nemare_cmd.addArgs(args);
     }
 
-    const nemare_step = b.step("run", "Run Nemare");
+    const nemare_step = b.step("run-nemare", "Run Nemare");
     nemare_step.dependOn(&nemare_cmd.step);
 }
